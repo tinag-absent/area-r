@@ -1,0 +1,58 @@
+{
+  "locations": [
+    {
+      "id": "loc-001",
+      "name": "東京本部",
+      "type": "headquarters",
+      "coordinates": "35.6762°N, 139.6503°E",
+      "description": "機関の中央本部。地下15階まで続く巨大施設。",
+      "facilities": [
+        "指揮室",
+        "研究所",
+        "訓練場",
+        "医療施設",
+        "収容施設"
+      ],
+      "securityLevel": 5
+    },
+    {
+      "id": "loc-002",
+      "name": "横浜港次元ゲート",
+      "type": "dimensional-gate",
+      "coordinates": "35.4437°N, 139.6380°E",
+      "description": "階宙次元への主要な出入口の一つ。常時監視体制。",
+      "facilities": [
+        "ゲート施設",
+        "検問所",
+        "倉庫"
+      ],
+      "securityLevel": 4
+    },
+    {
+      "id": "loc-003",
+      "name": "新宿監視ステーション",
+      "type": "monitoring-station",
+      "coordinates": "35.6896°N, 139.6920°E",
+      "description": "東京都心部の次元異常を監視する前線基地。",
+      "facilities": [
+        "監視室",
+        "緊急対応設備",
+        "小規模医療室"
+      ],
+      "securityLevel": 3
+    },
+    {
+      "id": "loc-004",
+      "name": "富士研究施設",
+      "type": "research-facility",
+      "coordinates": "35.3606°N, 138.7274°E",
+      "description": "機密レベルの高い研究を行う隔離施設。",
+      "facilities": [
+        "高度研究室",
+        "実体収容房",
+        "実験場"
+      ],
+      "securityLevel": 5
+    }
+  ]
+}

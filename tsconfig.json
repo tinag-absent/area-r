@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    // ── 出力ターゲット ────────────────────────────────────────────────
+    "target": "ES2022",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    // ── モジュール解決 ────────────────────────────────────────────────
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    // ── 厳格性 ────────────────────────────────────────────────────────
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    // ── TypeScript 5.0+ 推奨設定 ──────────────────────────────────────
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    // ── その他 ────────────────────────────────────────────────────────
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    // ── パスエイリアス ────────────────────────────────────────────────
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

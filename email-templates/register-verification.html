@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="x-apple-disable-message-reformatting">
+<title>着任認証コード — 海蝕機関</title>
+<style>
+  /* リセット */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+  table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+  img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
+
+  body {
+    background-color: #03070c;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .email-wrapper {
+    background-color: #03070c;
+    padding: 32px 16px;
+    width: 100%;
+  }
+
+  .email-card {
+    background-color: #070e18;
+    border: 1px solid rgba(0, 200, 255, 0.18);
+    border-radius: 4px;
+    margin: 0 auto;
+    max-width: 520px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* ヘッダーバー */
+  .header-bar {
+    background-color: rgba(0, 200, 255, 0.06);
+    border-bottom: 1px solid rgba(0, 200, 255, 0.14);
+    padding: 20px 28px 18px;
+  }
+
+  .header-label {
+    color: rgba(0, 200, 255, 0.5);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .header-logo {
+    color: #00c8ff;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 0.14em;
+  }
+
+  .header-sub {
+    color: rgba(164, 196, 218, 0.5);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  /* スキャンライン装飾バー */
+  .scan-bar {
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(0,200,255,0.04) 20%,
+      rgba(0,200,255,0.12) 50%,
+      rgba(0,200,255,0.04) 80%,
+      transparent 100%
+    );
+    height: 3px;
+  }
+
+  /* 本文エリア */
+  .body-area {
+    padding: 28px 28px 24px;
+  }
+
+  .section-label {
+    color: rgba(0, 200, 255, 0.45);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    border-bottom: 1px solid rgba(0, 200, 255, 0.08);
+    padding-bottom: 8px;
+  }
+
+  .greeting {
+    color: #a4c4da;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .greeting strong {
+    color: #00c8ff;
+    font-weight: normal;
+  }
+
+  /* OTPコードボックス */
+  .otp-outer {
+    background-color: #03070c;
+    border: 1px solid rgba(0, 200, 255, 0.22);
+    border-radius: 4px;
+    margin: 24px 0;
+    padding: 2px;
+  }
+
+  .otp-inner {
+    background-color: #040b12;
+    border-radius: 3px;
+    padding: 22px 16px;
+    text-align: center;
+  }
+
+  .otp-hint {
+    color: rgba(0, 200, 255, 0.4);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .otp-code {
+    color: #00c8ff;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 0.35em;
+    line-height: 1;
+    text-shadow: 0 0 20px rgba(0,200,255,0.4);
+  }
+
+  .otp-expiry {
+    color: rgba(255, 180, 60, 0.7);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    margin-top: 12px;
+  }
+
+  /* 警告ボックス */
+  .warning-box {
+    background-color: rgba(255, 180, 60, 0.05);
+    border: 1px solid rgba(255, 180, 60, 0.2);
+    border-left: 3px solid rgba(255, 180, 60, 0.5);
+    border-radius: 2px;
+    margin: 20px 0;
+    padding: 12px 14px;
+  }
+
+  .warning-box p {
+    color: rgba(255, 180, 60, 0.85);
+    font-size: 11px;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .text-normal {
+    color: rgba(164, 196, 218, 0.65);
+    font-size: 12px;
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  /* フッター */
+  .footer-bar {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(0, 200, 255, 0.07);
+    padding: 16px 28px;
+  }
+
+  .footer-text {
+    color: rgba(164, 196, 218, 0.2);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* モバイル */
+  @media only screen and (max-width: 560px) {
+    .email-wrapper { padding: 16px 8px; }
+    .header-bar    { padding: 18px 20px 16px; }
+    .body-area     { padding: 22px 20px 20px; }
+    .footer-bar    { padding: 14px 20px; }
+    .otp-code      { font-size: 32px; letter-spacing: 0.28em; }
+  }
+</style>
+</head>
+<body>
+<div class="email-wrapper">
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td align="center">
+        <div class="email-card">
+
+          <!-- ヘッダー -->
+          <div class="header-bar">
+            <div class="header-label">◈ KAISHOKU AGENCY — SECURE CHANNEL</div>
+            <div class="header-logo">海蝕機関</div>
+            <div class="header-sub">DIMENSIONAL EROSION RESPONSE AUTHORITY</div>
+          </div>
+
+          <div class="scan-bar"></div>
+
+          <!-- 本文 -->
+          <div class="body-area">
+
+            <div class="section-label">◈ 着任認証プロトコル</div>
+
+            <p class="greeting">
+              エージェント <strong>{{username}}</strong> — 着任申請を受理しました。<br>
+              以下の認証コードを入力して、機関員登録を完了してください。
+            </p>
+
+            <!-- OTP コード -->
+            <div class="otp-outer">
+              <div class="otp-inner">
+                <div class="otp-hint">▶ VERIFICATION CODE</div>
+                <div class="otp-code">{{otp_code}}</div>
+                <div class="otp-expiry">⚠ 有効期限: 発行から 10 分間</div>
+              </div>
+            </div>
+
+            <p class="text-normal">
+              このコードは一度のみ有効です。登録フォームの「認証コード」欄に入力してください。
+            </p>
+
+            <div class="warning-box">
+              <p>
+                ⚠ 心当たりのない場合は、このメールを無視してください。<br>
+                海蝕機関がパスキーや個人情報をメールで要求することはありません。<br>
+                このコードを他者と共有しないでください。
+              </p>
+            </div>
+
+          </div>
+
+          <!-- フッター -->
+          <div class="footer-bar">
+            <p class="footer-text">
+              KAISHOKU AGENCY — CLASSIFIED SYSTEM<br>
+              このメールは自動送信されています。返信はできません。<br>
+              — {{org_name}} —
+            </p>
+          </div>
+
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

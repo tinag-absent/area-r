@@ -1,0 +1,681 @@
+/* ═══════════════════════════════════════════════════════════════════
+   KAISHOKU AGENCY — DESIGN SYSTEM
+   globals.css v3 — 完全正本
+   Updated: 2026-03-19 03:55 JST — .material-symbols-rounded ベーススタイルを末尾に追加
+   Updated: 2026-03-19 04:10 JST — html/bodyにcolor-scheme:dark追加、input-baseにautofill対策(-webkit-autofill)とcolor-scheme:dark追加
+   Updated: 2026-03-19 04:20 JST — ローカルフォント追加（Narehate/Isemin/Isego/IgyouMincho）＋CSS変数・クラスに割り当て
+   Updated: 2026-03-19 04:35 JST — シャギり対策：html/bodyの-webkit-font-smoothing:noneをautoに変更、和文フォントクラスにantialiased設定、モノスペースのみnone維持
+   Updated: 2026-03-19 04:40 JST — モノスペース系もantialiasedに統一（全フォントシャギりなし）
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ────────────────────────────────────────────────────────────────────
+   LOCAL FONTS — @font-face
+   ─────────────────────────────────────────────────────────────────────
+   Narehate  : ひらがな・独自字体 → 解読不能テキスト・ARG演出
+   Isemin    : 伊勢御明朝 9800g  → 本文・UI日本語全般フォールバック
+   Isego     : 伊勢御ゴシック    → HUDラベル・数値・小見出し
+   IgyouMincho/2/3 : 異形明朝   → タイトル・章見出し・フレーバー
+   ──────────────────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Narehate';
+  src: url('/fonts/Narehate-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Isemin';
+  src: url('/fonts/Isemin.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Isego';
+  src: url('/fonts/Isego.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IgyouMincho';
+  src: url('/fonts/IgyouMincho.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IgyouMincho';
+  src: url('/fonts/IgyouMincho2.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IgyouMincho';
+  src: url('/fonts/IgyouMincho3.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* ────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS
+   ──────────────────────────────────────────────────────────────────── */
+@theme {
+  /* ── Background */
+  --color-bg:           #03070c;
+  --color-bg-surface:   #070e18;
+  --color-bg-raised:    #0c1822;
+  --color-bg-hover:     #101f2e;
+
+  /* ── Border */
+  --color-border:       rgba(0,200,255,0.09);
+  --color-border-hover: rgba(0,200,255,0.28);
+
+  /* ── Primary — Cyan phosphor */
+  --color-primary:      #00c8ff;
+  --color-primary-dim:  rgba(0,200,255,0.08);
+  --color-primary-glow: rgba(0,200,255,0.22);
+
+  /* ── Semantic */
+  --color-foreground:   #a4c4da;
+  --color-fg-dim:       #649bb9;   /* was #456070 (3.0:1) → now 6.7:1 */
+  --color-fg-muted:     #4e8099;   /* was #2a4050 (1.9:1) → now 4.7:1 */
+  --color-fg-decorative:#243c52;   /* was #182838 (1.3:1) → now 2.0:1 */
+  --color-warning:      #ffb43c;
+  --color-danger:       #ff4040;
+  --color-success:      #3ecf6a;
+  --color-purple:       #c084fc;
+
+  /* ── Typography */
+  --font-mono: var(--font-share-tech-mono), 'Share Tech Mono', 'Courier New', Courier, monospace;
+
+  /* ── カスタムフォント変数 */
+  --font-ja:       'Isemin',  'Noto Serif JP', serif;          /* 本文・UI日本語全般 */
+  --font-hud:      'Isego',   'Noto Sans JP',  sans-serif;     /* HUDラベル・数値 */
+  --font-display:  'IgyouMincho', 'Isemin', serif;             /* タイトル・章見出し */
+  --font-cipher:   'Narehate', serif;                          /* ARG演出・解読不能テキスト */
+
+  /* ── Animation shorthands */
+  --animate-scanline:   scanline 11s linear infinite;
+  --animate-glitch:     glitch 14s infinite;
+  --animate-fade-in:    fadeIn 0.35s ease both;
+  --animate-pulse-dot:  pulse-dot 2.8s ease-in-out infinite;
+  --animate-slide-in:   slideIn 0.18s cubic-bezier(0.16,1,0.3,1);
+  --animate-flicker:    flicker 9s ease-in-out infinite;
+  --animate-blink:      blink 1s step-end infinite;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   RESET / BASE
+   ──────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+:focus-visible {
+  outline: 1px solid var(--color-primary);
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--color-bg);
+  color: var(--color-foreground);
+  font-family: var(--font-mono), 'Isemin', serif;
+  font-size: 13px;
+  line-height: 1.65;
+  height: 100%;
+  overflow-x: hidden;
+  /* CRT演出はbody::before/afterのオーバーレイで実現し、
+     フォントスムージングは auto に戻して和文シャギりを防止 */
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  font-smooth: auto;
+  /* OSのライトモード時もダークUIを維持 */
+  color-scheme: dark;
+}
+
+/* ── 全フォント共通：アンチエイリアス有効 */
+.font-mono-crt,
+input.input-base,
+select.input-base,
+code, pre,
+[style*="font-mono"],
+[class*="font-mono"] {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: always;
+}
+
+/* ── 和文フォント（Isemin・IgyouMincho・Isego）はアンチエイリアス有効 */
+.font-ja, .font-display, .font-display-bold, .font-hud,
+.isemin-prose, .igyou-heading, .isego-data,
+.hud-label, .page-title, .narehate-block {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: always;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   SCROLLBAR
+   ──────────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,200,255,0.1); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,200,255,0.22); }
+
+/* ────────────────────────────────────────────────────────────────────
+   CRT EFFECTS — body overlay layers
+   ──────────────────────────────────────────────────────────────────── */
+
+/* 1. 静的スキャンライン（常時横縞） */
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 9990;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.07) 2px,
+    rgba(0,0,0,0.07) 4px
+  );
+}
+
+/* 2. 移動スキャンライン（明帯が上→下） */
+body::after {
+  content: '';
+  position: fixed; top: 0; left: 0; width: 100%; height: 5px;
+  pointer-events: none; z-index: 9999;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0,200,255,0.04) 30%,
+    rgba(0,200,255,0.09) 50%,
+    rgba(0,200,255,0.04) 70%,
+    transparent 100%
+  );
+  animation: var(--animate-scanline);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   TYPOGRAPHY UTILITIES
+   ──────────────────────────────────────────────────────────────────── */
+
+/* HUD ラベル — 小型大文字トラッキングテキスト */
+.hud-label {
+  font-size: 11px;
+  font-family: var(--font-hud), var(--font-mono);   /* Isego → Share Tech Mono */
+  letter-spacing: 0.16em;
+  color: var(--color-fg-muted);
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* ページヘッダー */
+.page-header { margin-bottom: 24px; }
+.page-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: var(--font-display);                  /* IgyouMincho */
+  color: var(--color-foreground);
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+}
+
+/* カーソル点滅 */
+.terminal-cursor::after {
+  content: '█';
+  color: var(--color-primary);
+  animation: var(--animate-blink);
+  margin-left: 1px;
+  font-size: 0.9em;
+}
+
+/* グリッチ */
+.glitch-text { animation: var(--animate-glitch); }
+
+/* ────────────────────────────────────────────────────────────────────
+   FONT UTILITIES — カスタムフォントユーティリティ
+   ──────────────────────────────────────────────────────────────────── */
+
+/* 本文・UI日本語（伊勢御明朝） */
+.font-ja      { font-family: var(--font-ja); }
+
+/* HUDラベル・数値表示（伊勢御ゴシック） */
+.font-hud     { font-family: var(--font-hud); }
+
+/* タイトル・見出し（異形明朝）*/
+.font-display { font-family: var(--font-display); font-weight: 400; }
+.font-display-bold { font-family: var(--font-display); font-weight: 700; }
+
+/* ARG演出・解読不能テキスト・フレーバー（なれはて体） */
+.font-cipher  {
+  font-family: var(--font-cipher);
+  letter-spacing: 0.08em;
+  line-height: 1.8;
+}
+
+/* なれはて体：装飾的ブロック（インシデントタイトル・コーデックスなど） */
+.narehate-block {
+  font-family: var(--font-cipher);
+  font-size: 1.15em;
+  letter-spacing: 0.12em;
+  line-height: 2;
+  color: var(--color-primary);
+  opacity: 0.72;
+  text-shadow: 0 0 8px rgba(0,200,255,0.4);
+}
+
+/* 異形明朝：セクション見出し */
+.igyou-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1em;
+  letter-spacing: 0.06em;
+  color: var(--color-foreground);
+}
+
+/* 伊勢御ゴシック：データ値・コード表示 */
+.isego-data {
+  font-family: var(--font-hud);
+  font-size: 0.95em;
+  letter-spacing: 0.04em;
+}
+
+/* 伊勢御明朝：長文読み物テキスト */
+.isemin-prose {
+  font-family: var(--font-ja);
+  font-size: 13px;
+  line-height: 1.9;
+  letter-spacing: 0.03em;
+}
+
+/* コーナーブラケット */
+.bracket { position: relative; }
+.bracket::before, .bracket::after {
+  content: '';
+  position: absolute;
+  width: 9px; height: 9px;
+  border-color: rgba(0,200,255,0.22);
+  border-style: solid;
+}
+.bracket::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+.bracket::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
+/* セクション区切り線 */
+.divider {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--color-fg-muted);
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+}
+.divider::before, .divider::after { content: ''; flex: 1; border-top: 1px solid var(--color-border); }
+
+/* CRT パネル — 内側グロー */
+.crt-panel {
+  position: relative;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.5), 0 0 1px rgba(0,200,255,0.1);
+}
+.crt-panel::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,200,255,0.012) 0%, transparent 30%, transparent 70%, rgba(0,200,255,0.006) 100%);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   INPUT
+   ──────────────────────────────────────────────────────────────────── */
+.input-base {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  padding: 8px 12px;
+  color: var(--color-foreground);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.12s, box-shadow 0.12s;
+  caret-color: var(--color-primary);
+}
+.input-base::placeholder { color: var(--color-fg-muted); }
+.input-base:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary-dim), 0 0 14px rgba(0,200,255,0.05), inset 0 0 10px rgba(0,200,255,0.025);
+}
+/* オートフィル（Chrome/Safari）時にブラウザが白背景+黒文字で上書きするのを防止 */
+.input-base:-webkit-autofill,
+.input-base:-webkit-autofill:hover,
+.input-base:-webkit-autofill:focus,
+.input-base:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--color-foreground) !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--color-bg) inset !important;
+  box-shadow: 0 0 0 1000px var(--color-bg) inset !important;
+  background-color: var(--color-bg) !important;
+  caret-color: var(--color-primary);
+  transition: background-color 9999s ease-in-out 0s;
+}
+/* OSのライトモード時もダークUIを強制 */
+.input-base { color-scheme: dark; }
+select.input-base {
+  cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%234a6a80'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
+}
+select.input-base option { background: #070e18; color: var(--color-foreground); }
+
+/* ────────────────────────────────────────────────────────────────────
+   BUTTON
+   ──────────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 16px;
+  font-family: var(--font-mono); font-size: 12px; font-weight: bold;
+  letter-spacing: 0.07em;
+  cursor: pointer; border: 1px solid;
+  transition: background 0.1s, border-color 0.1s, box-shadow 0.1s, color 0.1s;
+  white-space: nowrap; border-radius: 0; line-height: 1.4;
+}
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.btn-primary   { color: var(--color-primary); border-color: rgba(0,200,255,0.32); background: rgba(0,200,255,0.055); }
+.btn-primary:hover:not(:disabled) { background: rgba(0,200,255,0.12); border-color: rgba(0,200,255,0.58); box-shadow: 0 0 14px rgba(0,200,255,0.16); }
+
+.btn-secondary { color: var(--color-fg-dim); border-color: var(--color-border); background: transparent; }
+.btn-secondary:hover:not(:disabled) { color: var(--color-foreground); border-color: var(--color-border-hover); background: var(--color-bg-raised); }
+
+.btn-danger    { color: var(--color-danger);  border-color: rgba(255,64,64,0.28); background: rgba(255,64,64,0.05); }
+.btn-danger:hover:not(:disabled)  { background: rgba(255,64,64,0.12); border-color: rgba(255,64,64,0.5); }
+
+.btn-warning   { color: var(--color-warning); border-color: rgba(255,180,60,0.3); background: rgba(255,180,60,0.055); }
+.btn-warning:hover:not(:disabled) { background: rgba(255,180,60,0.12); border-color: rgba(255,180,60,0.55); }
+
+.btn-sm  { padding: 4px 10px; font-size: 11px; }
+.btn-lg  { padding: 10px 22px; font-size: 13px; }
+.btn-full { width: 100%; justify-content: center; }
+
+/* ────────────────────────────────────────────────────────────────────
+   BADGE / TAG
+   ──────────────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center;
+  font-size: 10px; letter-spacing: 0.08em;
+  padding: 2px 7px; border: 1px solid; border-radius: 0;
+  white-space: nowrap;
+}
+.badge-cyan   { color: var(--color-primary); border-color: rgba(0,200,255,0.32);  background: rgba(0,200,255,0.055); }
+.badge-green  { color: var(--color-success); border-color: rgba(62,207,106,0.32); background: rgba(62,207,106,0.055); }
+.badge-yellow { color: var(--color-warning); border-color: rgba(255,180,60,0.32); background: rgba(255,180,60,0.055); }
+.badge-red    { color: var(--color-danger);  border-color: rgba(255,64,64,0.32);  background: rgba(255,64,64,0.055); }
+.badge-purple { color: var(--color-purple);  border-color: rgba(192,132,252,0.32);background: rgba(192,132,252,0.055); }
+.badge-muted  { color: var(--color-fg-dim);  border-color: rgba(0,200,255,0.1);   background: transparent; }
+
+/* ────────────────────────────────────────────────────────────────────
+   STATUS INDICATORS
+   ──────────────────────────────────────────────────────────────────── */
+.dot {
+  display: inline-block; width: 5px; height: 5px;
+  border-radius: 50%; flex-shrink: 0;
+}
+.dot-online  { background: var(--color-success); box-shadow: 0 0 6px var(--color-success);  animation: var(--animate-pulse-dot); }
+.dot-warning { background: var(--color-warning); box-shadow: 0 0 6px var(--color-warning);  animation: pulse-warn 1.2s ease-in-out infinite; }
+.dot-danger  { background: var(--color-danger);  box-shadow: 0 0 8px var(--color-danger);   animation: pulse-danger 0.6s ease-in-out infinite; }
+.dot-offline { background: var(--color-fg-muted); }
+
+/* 大きい版 (.status-*) — Sidebar等で使用 */
+.status-online, .status-warning, .status-danger {
+  display: inline-block; flex-shrink: 0;
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.status-online  { background: var(--color-success); box-shadow: 0 0 8px var(--color-success), 0 0 16px rgba(62,207,106,0.25); animation: var(--animate-pulse-dot); }
+.status-warning { background: var(--color-warning); box-shadow: 0 0 8px var(--color-warning); animation: pulse-warn 1s ease-in-out infinite; }
+.status-danger  { background: var(--color-danger);  box-shadow: 0 0 10px var(--color-danger), 0 0 20px rgba(255,64,64,0.35); animation: pulse-danger 0.5s ease-in-out infinite; }
+
+/* ────────────────────────────────────────────────────────────────────
+   METER BAR
+   ──────────────────────────────────────────────────────────────────── */
+.meter { height: 2px; background: rgba(0,200,255,0.06); overflow: hidden; position: relative; }
+.meter-bar { height: 3px; background: rgba(0,200,255,0.06); overflow: hidden; position: relative; }
+.meter-fill {
+  height: 100%;
+  transition: width 0.55s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+.meter-fill::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0;
+  width: 3px; background: white; opacity: 0.45; filter: blur(1px);
+}
+.meter-fill-cyan   { background: var(--color-primary); box-shadow: 0 0 4px var(--color-primary); }
+.meter-fill-green  { background: var(--color-success); box-shadow: 0 0 4px var(--color-success); }
+.meter-fill-yellow { background: var(--color-warning); box-shadow: 0 0 4px var(--color-warning); }
+.meter-fill-red    { background: var(--color-danger);  box-shadow: 0 0 4px var(--color-danger); }
+
+/* ────────────────────────────────────────────────────────────────────
+   TABLE
+   ──────────────────────────────────────────────────────────────────── */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--color-fg-muted); padding: 8px 12px;
+  text-align: left; border-bottom: 1px solid var(--color-border); white-space: nowrap;
+}
+.data-table td {
+  font-size: 12px; color: var(--color-foreground);
+  padding: 9px 12px; border-bottom: 1px solid rgba(0,200,255,0.04); vertical-align: middle;
+}
+.data-table tr:hover td { background: var(--color-bg-raised); }
+.data-table tr:last-child td { border-bottom: none; }
+
+/* ────────────────────────────────────────────────────────────────────
+   STATE — empty / loading / error
+   ──────────────────────────────────────────────────────────────────── */
+.state-empty {
+  padding: 48px 24px; text-align: center; color: var(--color-fg-dim);
+}
+.state-empty-icon  { font-size: 22px; margin-bottom: 12px; opacity: 0.18; display: block; }
+.state-empty-text  { font-size: 13px; color: var(--color-fg-dim); }
+.state-empty-sub   { font-size: 11px; color: var(--color-fg-muted); margin-top: 4px; }
+
+.state-loading {
+  display: flex; align-items: center; gap: 8px;
+  padding: 20px 0; font-size: 11px;
+  letter-spacing: 0.12em; color: var(--color-fg-muted); text-transform: uppercase;
+}
+.state-loading-dot { animation: var(--animate-blink); color: var(--color-primary); }
+
+/* ────────────────────────────────────────────────────────────────────
+   KEYFRAMES
+   ──────────────────────────────────────────────────────────────────── */
+@keyframes scanline {
+  0%   { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+@keyframes glitch {
+  0%,90%,100% { transform: none; opacity: 1; }
+  91% { transform: skewX(-3deg); opacity: 0.86; }
+  92% { transform: skewX(2deg) translateX(2px); }
+  93% { transform: none; }
+  95% { transform: skewX(-1deg); opacity: 0.94; }
+  96% { transform: none; opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; }
+  50%     { opacity: 0.22; }
+}
+@keyframes pulse-warn {
+  0%,100% { opacity: 1; }
+  50%     { opacity: 0.35; }
+}
+@keyframes pulse-danger {
+  0%,100% { opacity: 1; }
+  50%     { opacity: 0.45; }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(18px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes flicker {
+  0%,92%,100% { opacity: 1; }
+  93% { opacity: 0.48; }
+  94% { opacity: 1; }
+  97% { opacity: 0.76; }
+  98% { opacity: 1; }
+}
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes boot-line {
+  from { opacity: 0; transform: translateX(-5px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes count-flash {
+  0%   { color: white; text-shadow: 0 0 18px white; }
+  100% { color: inherit; text-shadow: inherit; }
+}
+.count-flash { animation: count-flash 0.4s ease-out; }
+
+/* ────────────────────────────────────────────────────────────────────
+   LAYOUT UTILITIES
+   ──────────────────────────────────────────────────────────────────── */
+
+/* ページコンテンツラッパー */
+.page-body {
+  padding: 28px 20px;
+  max-width: 960px;
+  margin: 0 auto;
+  animation: var(--animate-fade-in);
+}
+@media (min-width: 640px) { .page-body { padding: 32px 32px; } }
+
+/* カード */
+.card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+.card:last-child { margin-bottom: 0; }
+.card-title {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ════════════════════════════════════════
+   MOBILE SUPPORT
+   ════════════════════════════════════════ */
+
+/* dvh: モバイルURLバー対応の高さ単位 */
+:root {
+  --vh: 1vh;
+}
+.h-full-dvh   { height: 100dvh; height: 100vh; }
+.min-h-dvh    { min-height: 100dvh; min-height: 100vh; }
+
+/* モバイルでのハンバーガーボタン分のpadding */
+@media (max-width: 767px) {
+  .mobile-header-offset { padding-top: 48px; }
+}
+
+/* two-column レイアウト → モバイルで縦積み */
+.layout-split {
+  display: flex;
+  overflow: hidden;
+}
+@media (max-width: 767px) {
+  .layout-split          { flex-direction: column; }
+  .layout-split-sidebar  { width: 100% !important; max-height: 40vh; border-right: none !important; border-bottom: 1px solid var(--color-border); }
+  .layout-split-main     { flex: 1; min-height: 0; }
+}
+
+/* page-body モバイル余白 */
+@media (max-width: 767px) {
+  .page-body { padding: 56px 16px 24px; }
+}
+
+/* カードグリッド: モバイルで1列 */
+@media (max-width: 480px) {
+  .card-grid-auto { grid-template-columns: 1fr !important; }
+}
+
+/* データテーブル: モバイルでスクロール */
+.table-scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 767px) {
+  .data-table th, .data-table td { padding: 7px 10px; }
+  .data-table th:last-child, .data-table td:last-child { padding-right: 14px; }
+}
+
+/* badge: モバイルで文字切れ防止 */
+@media (max-width: 767px) {
+  .badge { font-size: 8px; padding: 2px 5px; }
+}
+
+/* ToastContainer: モバイルで下中央 */
+@media (max-width: 767px) {
+  .toast-container {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 12px !important;
+    width: auto !important;
+  }
+}
+
+/* フォーム要素: モバイルでズームしない (16px以上) */
+@media (max-width: 767px) {
+  .input-base { font-size: max(16px, 13px); }
+  select.input-base { font-size: max(16px, 13px); }
+}
+
+/* chat: モバイル入力欄の固定 */
+@media (max-width: 767px) {
+  .chat-input-area { padding: 8px 12px 12px; padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+}
+
+/* safe area insets (iPhone notch/home indicator) */
+@supports (padding: max(0px)) {
+  .safe-bottom { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+  .safe-top    { padding-top:    max(0px,  env(safe-area-inset-top)); }
+}
+
+/* ── ボトムナビ用 padding ─────────────────────────────────────────── */
+@media (max-width: 767px) {
+  #main-content { padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* ── Material Symbols Rounded (Google Fonts CDN) ──────────────────── */
+.material-symbols-rounded {
+  font-family: 'Material Symbols Rounded';
+  font-style: normal;
+  font-weight: normal;
+  font-size: inherit;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+  vertical-align: middle;
+  user-select: none;
+}

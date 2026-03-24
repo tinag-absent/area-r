@@ -1,0 +1,42 @@
+{
+  "name": "海蝕機関",
+  "short_name": "KAISHOKU",
+  "description": "海蝕機関 ARG — 次元侵食を観測・収束する秘密組織",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#07090f",
+  "theme_color": "#00c8ff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment"],
+  "shortcuts": [
+    {
+      "name": "ダッシュボード",
+      "url": "/dashboard",
+      "description": "機関ダッシュボードを開く"
+    },
+    {
+      "name": "チャット",
+      "url": "/chat/global",
+      "description": "グローバルチャンネルを開く"
+    },
+    {
+      "name": "海蝕マップ",
+      "url": "/map",
+      "description": "インシデントマップを開く"
+    }
+  ]
+}
